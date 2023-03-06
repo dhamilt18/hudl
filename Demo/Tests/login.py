@@ -17,7 +17,7 @@ myusername = ""
 mypassword = ""
 
 
-# list of errors
+# create array of results
 list_of_failed_tests = []
 list_of_failed_tests.clear()
 list_of_passing_tests = []
@@ -98,10 +98,11 @@ def test_login_page_elements_visible():
     driver.get("https://hudl.com/login")
     time.sleep(2)
     try:
-        if not login.check_elements():
-            assert "Find all elements testcase FAILED"
-        else:
+        if login.check_elements():
+            assert login.check_elements()
+            print("")
             list_of_passing_tests.append("Testcase: Find all elements")
+        else:
             print("")
     except NoSuchElementException as error:
         print("")

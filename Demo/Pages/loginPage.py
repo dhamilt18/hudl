@@ -27,32 +27,16 @@ class LoginPage:
         self.driver.find_element("link text", self.signup_button_text)
 
     def check_elements(self):
-            # signup_element = self.driver.find_element("link text", self.signup_button_text)
-            try:
-                assert self.driver.find_element("link text", self.signup_button_text)
-            except AssertionError as error:
-                    print("No signup element")
-            # if signup_element:
-            #    print("Signup element displayed!")
-            username_element = self.driver.find_element("css selector", self.username_email_css)
-            if username_element:
-                print("Username element displayed!")
-            password_element = self.driver.find_element("css selector", self.password_css)
-            if password_element:
-                print("Password element displayed!")
-            login_button_element = self.driver.find_element("css selector", self.login_button_css)
-            if login_button_element:
-                print("Login button element displayed!")
-            remember_checkbox_element = self.driver.find_element("css selector", self.remember_me_checkbox_css)
-            if remember_checkbox_element:
-                print("Remember checkbox element displayed!")
-            help_link_element = self.driver.find_element("css selector", self.need_help_css)
-            if help_link_element:
-                print("Need help link element displayed!")
-            sso_link_element = self.driver.find_element("css selector", self.sso_button_css)
-            if sso_link_element:
-                print("Log in with organization link element displayed!")
-
-
+        try:
+            assert self.driver.find_element("link text", self.signup_button_text)
+            assert self.driver.find_element("css selector", self.username_email_css)
+            assert self.driver.find_element("css selector", self.password_css)
+            assert self.driver.find_element("css selector", self.login_button_css)
+            assert self.driver.find_element("css selector", self.remember_me_checkbox_css)
+            assert self.driver.find_element("css selector", self.need_help_css)
+            assert self.driver.find_element("css selector", self.sso_button_css)
+            return True
+        except AssertionError:
+            return False
 
 
