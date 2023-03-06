@@ -32,7 +32,6 @@ class LoginPage:
             print("Signup element displayed!")
 
         username_element = self.driver.find_element("css selector", self.username_email_css)
-
         if username_element:
             print("Username element displayed!")
         password_element = self.driver.find_element("css selector", self.password_css)
