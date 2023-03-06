@@ -5,6 +5,7 @@ import os
 # allows for running in terminal
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from Demo.Pages.loginPage import LoginPage
 
 driver = webdriver.Chrome()
@@ -14,6 +15,13 @@ driver.maximize_window()
 # enter in your username and password here
 myusername = ""
 mypassword = ""
+
+
+# list of errors
+list_of_failed_tests = []
+list_of_failed_tests.clear()
+list_of_passing_tests = []
+list_of_passing_tests.clear()
 
 # Happy path test
 def test_login_valid():
@@ -25,8 +33,15 @@ def test_login_valid():
     time.sleep(1)
     login.click_login_btn()
     time.sleep(1)
-    if driver.title == "Home - Hudl":
-        print("Testcase: Valid login PASSED")
+    try:
+        if driver.title != "Home - Hudl":
+            assert driver.title == "Home - Hudl", "Test failed"
+        else:
+            list_of_passing_tests.append("Testcase: Valid login")
+            print("")
+    except AssertionError as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Valid login")
     time.sleep(2)
 
 
@@ -41,8 +56,16 @@ def test_login_wrong_username():
     # assert that we see invalid msg
     time.sleep(2)
     message = driver.find_element("css selector", login.message_css).text
-    if message == "We didn't recognize that email and/or password.Need help?":
-        print("Testcase: Wrong username PASSED")
+    try:
+        if message != "We didn't recognize that email and/or password.Need help?":
+            assert message == "We didn't recognize that email and/or password.Need help?", "Test failed"
+        else:
+            list_of_passing_tests.append("Testcase: Wrong username")
+            print("")
+    except AssertionError as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Wrong username")
+
     time.sleep(2)
 
 
@@ -57,8 +80,15 @@ def test_login_wrong_password():
     # verify that we see invalid msg
     time.sleep(2)
     message = driver.find_element("css selector", login.message_css).text
-    if message == "We didn't recognize that email and/or password.Need help?":
-        print("Testcase: Wrong password PASSED")
+    try:
+        if message != "We didn't recognize that email and/or password.Need help?":
+            assert message == "We didn't recognize that email and/or password.Need help?", "Test Failed"
+        else:
+            list_of_passing_tests.append("Testcase: Wrong password")
+            print("")
+    except AssertionError as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Wrong password")
     time.sleep(2)
 
 
@@ -67,9 +97,16 @@ def test_login_page_elements_visible():
     login = LoginPage(driver)
     driver.get("https://hudl.com/login")
     time.sleep(2)
-    login.check_elements()
-    print("Find all elements testcase PASSED")
-    time.sleep(2)
+    try:
+        if not login.check_elements():
+            assert "Find all elements testcase FAILED"
+        else:
+            list_of_passing_tests.append("Testcase: Find all elements")
+            print("")
+    except NoSuchElementException as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Find all elements")
+        time.sleep(2)
 
 
 def test_username_no_password():
@@ -81,9 +118,16 @@ def test_username_no_password():
     login.click_login_btn()
     time.sleep(1)
     message = driver.find_element("css selector", login.message_css).text
-    if message == "We didn't recognize that email and/or password.Need help?":
-        print("Testcase: Username with no password PASSED")
-    time.sleep(2)
+    try:
+        if message != "We didn't recognize that email and/or password.Need help?":
+            assert message == "We didn't recognize that email and/or password.Need help", "Test failed"
+        else:
+            list_of_passing_tests.append("Testcase: Username with no password")
+            print("")
+    except AssertionError as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Username with no password")
+        time.sleep(2)
 
 
 def test_password_no_username():
@@ -95,8 +139,16 @@ def test_password_no_username():
     login.click_login_btn()
     time.sleep(1)
     message = driver.find_element("css selector", login.message_css).text
-    if message == "We didn't recognize that email and/or password.Need help?":
-        print("Testcase: Password with no username PASSED")
+    try:
+        if message != "We didn't recognize that email and/or password.Need help?a":
+            assert message == "We didn't recognize that email and/or password.Need help?a", "Test failed"
+        else:
+            list_of_passing_tests.append("Testcase: Password with no usernane")
+            print("")
+    except AssertionError as error:
+        print("")
+        list_of_failed_tests.append("Testcase: Password with no username")
+
 
 
 # run these tests:
@@ -109,4 +161,17 @@ test_password_no_username()
 
 driver.close()
 driver.quit()
-print("ALL Tests are completed")
+# display results of tests
+print("ALL Tests are COMPLETED, summary of tests results: ")
+print("...")
+print("...")
+print("...")
+# report if any tests failed
+print("Passing Tests:")
+for i in list_of_passing_tests:
+    print(i)
+
+print("")
+print("Failed Tests:")
+for i in list_of_failed_tests:
+    print(i)
