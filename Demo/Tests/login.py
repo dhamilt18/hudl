@@ -12,8 +12,8 @@ driver.implicitly_wait(10)
 driver.maximize_window()
 
 # enter in your username and password here
-myusername = "dhamilt18@gmail.com"
-mypassword = "DgqXw&E65q1q*!zp"
+myusername = ""
+mypassword = ""
 
 # Happy path test
 def test_login_valid():
